@@ -19,6 +19,18 @@ class StatsSourceRepository extends ServiceEntityRepository
         parent::__construct($registry, StatsSource::class);
     }
 
+    public function findLastInserted(string $code)
+    {
+        return $this
+            ->createQueryBuilder("e")
+            ->where('e.code = :code')
+            ->setParameter('code', $code)
+            ->orderBy("id", "DESC")
+            ->setMaxResults(1)
+            ->getQuery()
+            ->getOneOrNullResult();
+    }
+
     // /**
     //  * @return StatsSource[] Returns an array of StatsSource objects
     //  */

@@ -23,7 +23,7 @@ class DataController extends AbstractController
      */
     public function showData(string $code, StatsSourceRepository $stats, Request $request)
     {
-        if (!$statsData = $stats->findOneBy(['code' => $code])) {
+        if (!$statsData = $stats->findLastInserted($code)) {
             return $this->response([
                 'success' => false,
                 'error' => 'Invalid source identifier'
