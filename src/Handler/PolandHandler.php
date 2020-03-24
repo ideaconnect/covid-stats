@@ -45,7 +45,7 @@ class PolandHandler
         $count = 0;
         $source = $this->source;
         /** @var StatsSet */
-        if (!$lastEntry = $source->getStatsSets()->last()) {
+        if (!$lastEntry = $source->getStatsSets()->first()) {
 
             $statsSet = new StatsSet();
             $statsSet->setSource($source);
@@ -58,8 +58,10 @@ class PolandHandler
                 $stat->setName($covidStat["Województwo"]);
                 $stat->setDeaths(intval($covidStat["Liczba zgonów"]));
                 $stat->setDeathsDelta(0);
+                $stat->setDeathsYesterday(0);
                 $stat->setConfirmed(intval($covidStat["Liczba"]));
                 $stat->setConfirmedDelta(0);
+                $stat->setConfirmedYesterday(0);
                 $count++;
                 $this->em->persist($stat);
             }
@@ -67,9 +69,23 @@ class PolandHandler
             $this->em->persist($statsSet);
         } elseif ($lastEntry->getLastUpdate() < $date) {
 
+            var_dump($lastEntry->getLastUpdate()->format(DATE_RFC3339_EXTENDED));
+            var_dump($date->format(DATE_RFC3339_EXTENDED));
             $statsSet = new StatsSet();
             $statsSet->setSource($source);
             $statsSet->setLastUpdate($date);
+
+            $prevDayEntry = null;
+            while($source->getStatsSets()->next() )
+            {
+                /** @var StatsSet */
+                $candidate = $source->getStatsSets()->current();
+                if ($candidate->getLastUpdate()->format('d') !== $date->format('d')) {
+                    var_dump('using ' . $candidate->getLastUpdate()->format(DATE_RFC3339_EXTENDED));
+                    $prevDayEntry = $candidate;
+                    break;
+                }
+            }
 
             foreach($covidStats as $covidStat) {
 
@@ -83,6 +99,17 @@ class PolandHandler
                 $stat->setDeathsDelta( ($lastEntryStat ? $stat->getDeaths() - $lastEntryStat->getDeaths() : 0) );
                 $stat->setConfirmed(intval($covidStat["Liczba"]));
                 $stat->setConfirmedDelta( ($lastEntryStat ? $stat->getDeaths() - $lastEntryStat->getDeaths() : 0) );
+
+                $stat->setDeathsYesterday(0);
+                $stat->setConfirmedYesterday(0);
+
+                if ($prevDayEntry) {
+                    if($prevDayStat = $prevDayEntry->getStatsEntries()[$code]) {
+                        $stat->setDeathsYesterday( $stat->getDeaths() - $prevDayStat->getDeaths() );
+                        $stat->setConfirmedYesterday( $stat->getConfirmed() - $prevDayStat->getConfirmed() );
+                    }
+                }
+
                 $count++;
                 $this->em->persist($stat);
             }

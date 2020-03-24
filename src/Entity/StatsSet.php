@@ -25,6 +25,7 @@ class StatsSet
 
     /**
      * @ORM\OneToMany(targetEntity="App\Entity\StatsEntry", mappedBy="statsSet", orphanRemoval=true, indexBy="code")
+     * @ORM\OrderBy({"id" = "DESC"})
      */
     private $statsEntries;
 

@@ -16,10 +16,13 @@ class StatsEntry
             'name' => $this->getName(),
             'confirmed' => $this->getConfirmed(),
             'confirmed_delta' => $this->getConfirmedDelta(),
+            'confirmed_since_yesterday' => $this->getConfirmedYesterday(),
             'deaths' => $this->getDeaths(),
             'deaths_delta' => $this->getDeathsDelta(),
+            'deaths_since_yesterday' => $this->getDeathsYesterday(),
             'recovered' => $this->getRecovered(),
-            'recovered_delta' => $this->getRecoveredDelta()
+            'recovered_delta' => $this->getRecoveredDelta(),
+            'recovered_since_yesterday' => $this->getRecoveredYesterday()
         ];
     }
 
@@ -59,12 +62,22 @@ class StatsEntry
     /**
      * @ORM\Column(type="integer")
      */
+    private $confirmedYesterday;
+
+    /**
+     * @ORM\Column(type="integer")
+     */
     private $deaths;
 
     /**
      * @ORM\Column(type="integer")
      */
     private $deathsDelta;
+
+    /**
+     * @ORM\Column(type="integer")
+     */
+    private $deathsYesterday;
 
     /**
      * @ORM\Column(type="integer", nullable=true)
@@ -75,6 +88,11 @@ class StatsEntry
      * @ORM\Column(type="integer", nullable=true)
      */
     private $recoveredDelta;
+
+    /**
+     * @ORM\Column(type="integer", nullable=true)
+     */
+    private $recoveredYesterday;
 
     public function getId(): ?int
     {
@@ -141,6 +159,18 @@ class StatsEntry
         return $this;
     }
 
+    public function getConfirmedYesterday(): ?int
+    {
+        return $this->confirmedYesterday;
+    }
+
+    public function setConfirmedYesterday(int $confirmedYesterday): self
+    {
+        $this->confirmedYesterday = $confirmedYesterday;
+
+        return $this;
+    }
+
     public function getDeaths(): ?int
     {
         return $this->deaths;
@@ -165,6 +195,18 @@ class StatsEntry
         return $this;
     }
 
+    public function getDeathsYesterday(): ?int
+    {
+        return $this->deathsYesterday;
+    }
+
+    public function setDeathsYesterday(int $deathsYesterday): self
+    {
+        $this->deathsYesterday = $deathsYesterday;
+
+        return $this;
+    }
+
     public function getRecovered(): ?int
     {
         return $this->recovered;
@@ -185,6 +227,18 @@ class StatsEntry
     public function setRecoveredDelta(?int $recoveredDelta): self
     {
         $this->recoveredDelta = $recoveredDelta;
+
+        return $this;
+    }
+
+    public function getRecoveredYesterday(): ?int
+    {
+        return $this->recoveredYesterday;
+    }
+
+    public function setRecoveredYesterday(?int $recoveredYesterday): self
+    {
+        $this->recoveredYesterday = $recoveredYesterday;
 
         return $this;
     }

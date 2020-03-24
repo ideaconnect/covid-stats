@@ -6,7 +6,38 @@
         {% block stylesheets %}{% endblock %}
     </head>
     <body>
-        <p>HTML version not yet available!</p>
+        <p>Info: You can get this in JSON or XML formats!</p>
         <p>Use the `Accept` header (<b>text/xml</b> or <b>application/json</b>) or `format` query parameter (<b>xml</b> or <b>json</b>).</p>
+        <h1 id="name">{{ name }}</h1>
+        <p id="last_update">{{ last_update }}</p>
+        <p id="code">{{ code }} </p>
+        <p id="source">Source: {{ source }} </p>
+        <p id="source_description">Description: {{ source_description }} </p>
+        <p id="source_license">License: {{ source_license }} </p>
+        <table border="1">
+            <tbody>
+                <tr>
+                    <th>name</th>
+                    <th>confirmed</th>
+                    <th>confirmed delta</th>
+                    <th>confirmed since yesterday</th>
+                    <th>deaths</th>
+                    <th>deaths delta</th>
+                    <th>deaths since yesterday</th>
+
+                </tr>
+                {% for entry in entries %}
+                <tr>
+                    <td>{{ entry.name }}</td>
+                    <td>{{ entry.confirmed }}</td>
+                    <td>{{ entry.confirmed_delta }}</td>
+                    <td>{{ entry.confirmed_since_yesterday }}</td>
+                    <td>{{ entry.deaths }}</td>
+                    <td>{{ entry.deaths_delta }}</td>
+                    <td>{{ entry.deaths_since_yesterday }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
     </body>
 </html>

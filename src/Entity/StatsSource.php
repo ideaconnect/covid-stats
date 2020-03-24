@@ -45,6 +45,8 @@ class StatsSource
 
     /**
      * @ORM\OneToMany(targetEntity="App\Entity\StatsSet", mappedBy="source")
+     * @ORM\OrderBy({"lastUpdate" = "DESC"})
+     *
      */
     private $statsSets;
 
@@ -125,6 +127,7 @@ class StatsSource
         $data = [
         'code' => $this->getCode(),
         'source' => $this->getSource(),
+        'name' => $this->getName(),
         'source_description' => $this->getSourceDescription(),
         'source_license' => $this->getSourceLicense(),
         'last_update' => $lastStats->getLastUpdate()->format(DATE_RFC3339_EXTENDED),

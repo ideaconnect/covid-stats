@@ -71,7 +71,7 @@ class DataController extends AbstractController
         if ($finalType !== 'html') {
             $responseString = $this->serializer->serialize($data, $finalType);
         } else {
-            return $this->render('data.html.twig');
+            return $this->render('data.html.twig', $data);
         }
 
         $response->setContent($responseString);
