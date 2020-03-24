@@ -123,7 +123,7 @@ class StatsSource
     public function toArray()
     {
         /** @var StatsSet */
-        $lastStats = $this->getStatsSets()->last();
+        $lastStats = $this->getStatsSets()->first();
         $data = [
         'code' => $this->getCode(),
         'source' => $this->getSource(),
