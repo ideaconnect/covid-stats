@@ -25,7 +25,7 @@ class StatsSourceRepository extends ServiceEntityRepository
             ->createQueryBuilder("e")
             ->where('e.code = :code')
             ->setParameter('code', $code)
-            ->orderBy("id", "DESC")
+            ->orderBy("e.id", "DESC")
             ->setMaxResults(1)
             ->getQuery()
             ->getOneOrNullResult();
