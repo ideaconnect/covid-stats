@@ -9,23 +9,6 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class StatsEntry
 {
-    public function toArray()
-    {
-        return [
-            'code' => $this->getCode(),
-            'name' => $this->getName(),
-            'confirmed' => $this->getConfirmed(),
-            'confirmed_delta' => $this->getConfirmedDelta(),
-            'confirmed_since_yesterday' => $this->getConfirmedYesterday(),
-            'deaths' => $this->getDeaths(),
-            'deaths_delta' => $this->getDeathsDelta(),
-            'deaths_since_yesterday' => $this->getDeathsYesterday(),
-            'recovered' => $this->getRecovered(),
-            'recovered_delta' => $this->getRecoveredDelta(),
-            'recovered_since_yesterday' => $this->getRecoveredYesterday()
-        ];
-    }
-
     /**
      * @ORM\Id()
      * @ORM\GeneratedValue()
@@ -93,6 +76,22 @@ class StatsEntry
      * @ORM\Column(type="integer", nullable=true)
      */
     private $recoveredYesterday;
+    public function toArray()
+    {
+        return [
+            'code' => $this->getCode(),
+            'name' => $this->getName(),
+            'confirmed' => $this->getConfirmed(),
+            'confirmed_delta' => $this->getConfirmedDelta(),
+            'confirmed_since_yesterday' => $this->getConfirmedYesterday(),
+            'deaths' => $this->getDeaths(),
+            'deaths_delta' => $this->getDeathsDelta(),
+            'deaths_since_yesterday' => $this->getDeathsYesterday(),
+            'recovered' => $this->getRecovered(),
+            'recovered_delta' => $this->getRecoveredDelta(),
+            'recovered_since_yesterday' => $this->getRecoveredYesterday()
+        ];
+    }
 
     public function getId(): ?int
     {

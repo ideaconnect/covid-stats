@@ -59,8 +59,7 @@ class StatsSet
     public function entriesToArray()
     {
         $entries = [];
-        foreach($this->getStatsEntries() as $entry)
-        {
+        foreach ($this->getStatsEntries() as $entry) {
             $entries[$entry->getCode()] = $entry->toArray();
         }
 

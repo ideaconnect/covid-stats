@@ -8,7 +8,6 @@ use App\Entity\StatsSource;
 use DateTime;
 use DateTimeZone;
 use Doctrine\ORM\EntityManagerInterface;
-use DOMDocument;
 
 class PolandHandler
 {
@@ -46,12 +45,11 @@ class PolandHandler
         $source = $this->source;
         /** @var StatsSet */
         if (!$lastEntry = $source->getStatsSets()->first()) {
-
             $statsSet = new StatsSet();
             $statsSet->setSource($source);
             $statsSet->setLastUpdate($date);
 
-            foreach($covidStats as $covidStat) {
+            foreach ($covidStats as $covidStat) {
                 $stat = new StatsEntry();
                 $stat->setStatsSet($statsSet);
                 $stat->setCode($this->canonical($covidStat['Województwo']));
@@ -68,7 +66,6 @@ class PolandHandler
 
             $this->em->persist($statsSet);
         } elseif ($lastEntry->getLastUpdate() < $date) {
-
             var_dump($lastEntry->getLastUpdate()->format(DATE_RFC3339_EXTENDED));
             var_dump($date->format(DATE_RFC3339_EXTENDED));
             $statsSet = new StatsSet();
@@ -76,8 +73,7 @@ class PolandHandler
             $statsSet->setLastUpdate($date);
 
             $prevDayEntry = null;
-            while($source->getStatsSets()->next() )
-            {
+            while ($source->getStatsSets()->next()) {
                 /** @var StatsSet */
                 $candidate = $source->getStatsSets()->current();
                 if ($candidate->getLastUpdate()->format('d') !== $date->format('d')) {
@@ -87,8 +83,7 @@ class PolandHandler
                 }
             }
 
-            foreach($covidStats as $covidStat) {
-
+            foreach ($covidStats as $covidStat) {
                 $code = $this->canonical($covidStat['Województwo']);
                 $lastEntryStat = $lastEntry->getStatsEntries()[$code];
                 $stat = new StatsEntry();
@@ -96,17 +91,17 @@ class PolandHandler
                 $stat->setCode($code);
                 $stat->setName($covidStat["Województwo"]);
                 $stat->setDeaths(intval($covidStat["Liczba zgonów"]));
-                $stat->setDeathsDelta( ($lastEntryStat ? $stat->getDeaths() - $lastEntryStat->getDeaths() : 0) );
+                $stat->setDeathsDelta(($lastEntryStat ? $stat->getDeaths() - $lastEntryStat->getDeaths() : 0));
                 $stat->setConfirmed(intval($covidStat["Liczba"]));
-                $stat->setConfirmedDelta( ($lastEntryStat ? $stat->getConfirmed() - $lastEntryStat->getConfirmed() : 0) );
+                $stat->setConfirmedDelta(($lastEntryStat ? $stat->getConfirmed() - $lastEntryStat->getConfirmed() : 0));
 
                 $stat->setDeathsYesterday(0);
                 $stat->setConfirmedYesterday(0);
 
                 if ($prevDayEntry) {
-                    if($prevDayStat = $prevDayEntry->getStatsEntries()[$code]) {
-                        $stat->setDeathsYesterday( $stat->getDeaths() - $prevDayStat->getDeaths() );
-                        $stat->setConfirmedYesterday( $stat->getConfirmed() - $prevDayStat->getConfirmed() );
+                    if ($prevDayStat = $prevDayEntry->getStatsEntries()[$code]) {
+                        $stat->setDeathsYesterday($stat->getDeaths() - $prevDayStat->getDeaths());
+                        $stat->setConfirmedYesterday($stat->getConfirmed() - $prevDayStat->getConfirmed());
                     }
                 }
 
