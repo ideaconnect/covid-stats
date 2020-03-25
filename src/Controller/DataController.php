@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Repository\StatsSourceRepository;
+use Collator;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -31,6 +32,17 @@ class DataController extends AbstractController
         }
 
         $data = $statsData->toArray();
+
+        $sum = $data['entries']['615254905']; //unset;
+        unset($data['entries']['615254905']);
+
+        $coll = new Collator("pl");
+
+        uasort($data['entries'], function ($a, $b) use ($coll) {
+            return $coll->compare($a['name'], $b['name']);
+        });
+
+        $data['entries']['615254905'] = $sum;
         $data['success'] = true;
 
         return $this->response($data, 200, $request);
@@ -66,16 +78,20 @@ class DataController extends AbstractController
         $finalContentType = $finalContentType ?? 'text/html';
 
         $response = new Response();
+        $response->setStatusCode($code);
         $response->headers->set('Content-type', $finalContentType);
 
         if ($finalType !== 'html') {
             $responseString = $this->serializer->serialize($data, $finalType);
         } else {
-            return $this->render('data.html.twig', $data);
+            if ($code === 200) {
+                return $this->render('data.html.twig', $data);
+            } else {
+                return $this->render('error.html.twig');
+            }
         }
 
         $response->setContent($responseString);
-
         return $response;
     }
 }

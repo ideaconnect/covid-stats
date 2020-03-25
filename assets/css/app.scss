@@ -1,0 +1,61 @@
+@import "~bootstrap/scss/bootstrap";
+@import '~@fortawesome/fontawesome-free/css/all.css';
+
+body {
+    background-color: lightgray;
+}
+
+td,th {
+    padding: 5px;
+}
+
+
+table.data tr:last-child td {
+    font-weight:bold;
+}
+
+td {
+    border:1px solid;
+}
+
+tr:nth-child(odd) td {
+    background-color: #eeeeee;
+}
+
+td {
+    text-align: center;
+}
+
+table.source td {
+    text-align:left;
+}
+
+table.source th {
+    width:auto;
+}
+
+table.source td:nth-child(1) {
+    width:15%;
+}
+
+td:nth-child(1) {
+    width:18%;
+    text-align:left;
+}
+
+table {
+    width:100%;
+}
+
+td.more {
+    background-color: #eca1a6;
+}
+
+th {
+    background: #6c51a4;
+    font-weight:bold;
+    text-align:center;
+    padding:5px;
+    width:13%;
+    color:#fff;
+}

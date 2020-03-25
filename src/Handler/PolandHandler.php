@@ -98,7 +98,7 @@ class PolandHandler
                 $stat->setDeaths(intval($covidStat["Liczba zgonów"]));
                 $stat->setDeathsDelta( ($lastEntryStat ? $stat->getDeaths() - $lastEntryStat->getDeaths() : 0) );
                 $stat->setConfirmed(intval($covidStat["Liczba"]));
-                $stat->setConfirmedDelta( ($lastEntryStat ? $stat->getDeaths() - $lastEntryStat->getDeaths() : 0) );
+                $stat->setConfirmedDelta( ($lastEntryStat ? $stat->getConfirmed() - $lastEntryStat->getConfirmed() : 0) );
 
                 $stat->setDeathsYesterday(0);
                 $stat->setConfirmedYesterday(0);

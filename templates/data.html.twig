@@ -3,41 +3,70 @@
     <head>
         <meta charset="UTF-8">
         <title>{% block title %}COVID data for {{ name }}{% endblock %}</title>
-        {% block stylesheets %}{% endblock %}
+        {% block stylesheets %}{{ encore_entry_link_tags('app') }}{% endblock %}
     </head>
     <body>
-        <p>Info: You can get this in JSON or XML formats!</p>
-        <p>Use the `Accept` header (<b>text/xml</b> or <b>application/json</b>) or `format` query parameter (<b>xml</b> or <b>json</b>).</p>
-        <h1 id="name">{{ name }}</h1>
-        <p id="last_update">{{ last_update }}</p>
-        <p id="code">{{ code }} </p>
-        <p id="source">Source: {{ source }} </p>
-        <p id="source_description">Description: {{ source_description }} </p>
-        <p id="source_license">License: {{ source_license }} </p>
-        <table border="1">
+        <div class="container">
+        <h1>COVID-19 Stats</h1>
+        <div class="alert alert-success" role="alert">
+            <p>Info: You can get this in JSON or XML formats!<br>Use the `Accept` header (<b>text/xml</b> or <b>application/json</b>) or `format` query parameter (<b>xml</b> or <b>json</b>).</p>
+        </div>
+        <hr>
+        <table class="source">
             <tbody>
                 <tr>
-                    <th>name</th>
-                    <th>confirmed</th>
-                    <th>confirmed delta</th>
-                    <th>confirmed since yesterday</th>
-                    <th>deaths</th>
-                    <th>deaths delta</th>
-                    <th>deaths since yesterday</th>
+                    <th>Field</th>
+                    <th>Value</th>
+                </tr>
+                <tr>
+                    <td>Name</td>
+                    <td>{{ name }}</td>
+                </tr>
+                    <td>Last update</td>
+                    <td>{{ last_update }}</td>
+                </tr>
+                    <td>Source</td>
+                    <td>{{ source }} <a href="{{ source }}" class="btn btn-secondary">LINK</a></td>
+                </tr>
+                    <td>Description</td>
+                    <td>{{ source_description }}</td>
+                </tr>
+                    <td>License</td>
+                    <td>{{ source_license }}</td>
+                </tr>
+            </tbody>
+        </table>
+        <hr>
+        <table class="data">
+            <tbody>
+                <tr>
+                    <th><i class="fas fa-map-marked-alt"></i><br/>region</th>
+                    <th><i class="fas fa-users"></i><br/>confirmed</th>
+                    <th><i class="fas fa-users"></i><br/>delta</th>
+                    <th><i class="fas fa-users"></i><br/>since yesterday</th>
+                    <th><i class="fas fa-skull-crossbones"></i><br/>deaths</th>
+                    <th><i class="fas fa-skull-crossbones"></i><br/>delta</th>
+                    <th><i class="fas fa-skull-crossbones"></i><br/>since yesterday</th>
 
                 </tr>
                 {% for entry in entries %}
                 <tr>
                     <td>{{ entry.name }}</td>
                     <td>{{ entry.confirmed }}</td>
-                    <td>{{ entry.confirmed_delta }}</td>
-                    <td>{{ entry.confirmed_since_yesterday }}</td>
+                    <td {% if entry.confirmed_delta > 0 %}class="more"{% endif %}>{{ entry.confirmed_delta }}</td>
+                    <td {% if entry.confirmed_since_yesterday > 0 %}class="more"{% endif %}>{{ entry.confirmed_since_yesterday }}</td>
                     <td>{{ entry.deaths }}</td>
-                    <td>{{ entry.deaths_delta }}</td>
-                    <td>{{ entry.deaths_since_yesterday }}</td>
+                    <td {% if entry.deaths_delta > 0 %}class="more"{% endif %}>{{ entry.deaths_delta }}</td>
+                    <td {% if entry.deaths_since_yesterday > 0 %}class="more"{% endif %}>{{ entry.deaths_since_yesterday }}</td>
                 </tr>
                 {% endfor %}
             </tbody>
         </table>
+        <footer>
+            <p>This website uses assets provided by <a href="https://fontawesome.com"><i class="fab fa-font-awesome"></i> Font Awesome</p>
+        </footer>
+        </div>
+
+    {% block javascripts %}{{ encore_entry_script_tags('app') }}{% endblock %}
     </body>
 </html>
