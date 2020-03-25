@@ -23,7 +23,10 @@
                     <td>{{ name }}</td>
                 </tr>
                     <td>Last update</td>
-                    <td>{{ last_update }}</td>
+                    <td>{{ last_update|date('Y-m-d H:i:s') }}</td>
+                </tr>
+                    <td>Delta since</td>
+                    <td>{{ delta_since|date('Y-m-d H:i:s') }}</td>
                 </tr>
                     <td>Source</td>
                     <td>{{ source }} <a href="{{ source }}" class="btn btn-secondary">LINK</a></td>

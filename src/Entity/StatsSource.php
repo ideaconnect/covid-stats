@@ -131,8 +131,13 @@ class StatsSource
         'source_description' => $this->getSourceDescription(),
         'source_license' => $this->getSourceLicense(),
         'last_update' => $lastStats->getLastUpdate()->format(DATE_RFC3339_EXTENDED),
+        'delta_since' => null,
         'entries' => $lastStats->entriesToArray()
         ];
+
+        if ($this->getStatsSets()->next()) {
+            $data['delta_since'] = $this->getStatsSets()->current()->getLastUpdate()->format(DATE_RFC3339_EXTENDED);
+        }
 
         return $data;
     }
