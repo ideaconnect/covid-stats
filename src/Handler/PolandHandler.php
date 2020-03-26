@@ -73,15 +73,16 @@ class PolandHandler
             $statsSet->setLastUpdate($date);
 
             $prevDayEntry = null;
-            while ($source->getStatsSets()->next()) {
+            do {
                 /** @var StatsSet */
                 $candidate = $source->getStatsSets()->current();
+                var_dump('testing ' . $candidate->getLastUpdate()->format(DATE_RFC3339_EXTENDED));
                 if ($candidate->getLastUpdate()->format('d') !== $date->format('d')) {
                     var_dump('using ' . $candidate->getLastUpdate()->format(DATE_RFC3339_EXTENDED));
                     $prevDayEntry = $candidate;
                     break;
                 }
-            }
+            } while ($source->getStatsSets()->next());
 
             foreach ($covidStats as $covidStat) {
                 $code = $this->canonical($covidStat['Województwo']);
